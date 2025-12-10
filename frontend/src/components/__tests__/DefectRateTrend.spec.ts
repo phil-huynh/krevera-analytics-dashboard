@@ -58,11 +58,13 @@ describe('DefectRateTrend', () => {
     vi.clearAllMocks()
   })
 
+
   it('renders component title', () => {
     vi.mocked(fetchDefectRateTrend).mockResolvedValue(mockData)
     const wrapper = mount(DefectRateTrend)
     expect(wrapper.text()).toContain('Defect Rate Trend')
   })
+
 
   it('loads data on mount', async () => {
     vi.mocked(fetchDefectRateTrend).mockResolvedValue(mockData)
@@ -79,6 +81,7 @@ describe('DefectRateTrend', () => {
     })
   })
 
+
   it('displays summary statistics', async () => {
     vi.mocked(fetchDefectRateTrend).mockResolvedValue(mockData)
     const wrapper = mount(DefectRateTrend)
@@ -90,6 +93,7 @@ describe('DefectRateTrend', () => {
       expect(wrapper.text()).toContain('755')
     })
   })
+
 
   it('allows changing interval', async () => {
     vi.mocked(fetchDefectRateTrend).mockResolvedValue(mockData)
@@ -110,6 +114,7 @@ describe('DefectRateTrend', () => {
     })
   })
 
+
   it('applies correct rate color classes', async () => {
     vi.mocked(fetchDefectRateTrend).mockResolvedValue(mockData)
     const wrapper = mount(DefectRateTrend)
@@ -121,6 +126,7 @@ describe('DefectRateTrend', () => {
     })
   })
 
+
   it('handles error state', async () => {
     vi.mocked(fetchDefectRateTrend).mockRejectedValue(new Error('API Error'))
     const wrapper = mount(DefectRateTrend)
@@ -130,6 +136,7 @@ describe('DefectRateTrend', () => {
       expect(wrapper.text()).toContain('Error loading chart')
     })
   })
+
 
   it('initializes chart with line configuration', async () => {
     vi.mocked(fetchDefectRateTrend).mockResolvedValue(mockData)
@@ -145,6 +152,7 @@ describe('DefectRateTrend', () => {
       expect(chartOptions.yAxis.name).toContain('Defect Rate')
     })
   })
+
 
   it('reloads chart when props change', async () => {
     vi.mocked(fetchDefectRateTrend).mockResolvedValue(mockData)
@@ -176,6 +184,7 @@ describe('DefectRateTrend', () => {
     })
   })
 
+
   it('handles empty data', async () => {
     vi.mocked(fetchDefectRateTrend).mockResolvedValue({
       data_points: [],
@@ -188,6 +197,7 @@ describe('DefectRateTrend', () => {
       expect(wrapper.text()).toContain('No data available')
     })
   })
+
 
   it('disposes chart on unmount', async () => {
     vi.mocked(fetchDefectRateTrend).mockResolvedValue(mockData)

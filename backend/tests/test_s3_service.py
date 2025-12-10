@@ -140,7 +140,6 @@ class TestS3Service:
             mock_s3_client.create_bucket.return_value = {}
 
             service = S3Service()
-            # Trigger lazy initialization
             _ = service.s3_client
 
             mock_s3_client.create_bucket.assert_called_once_with(Bucket="new-bucket")

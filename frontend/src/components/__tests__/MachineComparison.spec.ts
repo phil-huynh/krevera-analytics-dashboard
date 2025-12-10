@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import MachineComparison from '@/components/MachineComparison.vue'
 
-// Mock ECharts
+
 vi.mock('echarts/core', () => ({
   use: vi.fn(),
   init: vi.fn(() => ({
@@ -27,7 +27,7 @@ vi.mock('echarts/renderers', () => ({
   CanvasRenderer: {}
 }))
 
-// Mock analytics service
+
 vi.mock('@/services/analytics', () => ({
   fetchMachineComparison: vi.fn()
 }))
@@ -48,11 +48,13 @@ describe('MachineComparison', () => {
     vi.clearAllMocks()
   })
 
+
   it('renders component title', () => {
     vi.mocked(fetchMachineComparison).mockResolvedValue(mockData)
     const wrapper = mount(MachineComparison)
     expect(wrapper.text()).toContain('Machine Performance Comparison')
   })
+
 
   it('loads data on mount', async () => {
     vi.mocked(fetchMachineComparison).mockResolvedValue(mockData)
@@ -64,6 +66,7 @@ describe('MachineComparison', () => {
     })
   })
 
+
   it('handles error state', async () => {
     vi.mocked(fetchMachineComparison).mockRejectedValue(new Error('API Error'))
     const wrapper = mount(MachineComparison)
@@ -73,6 +76,7 @@ describe('MachineComparison', () => {
       expect(wrapper.text()).toContain('Error loading chart')
     })
   })
+
 
   it('initializes chart with bar configuration', async () => {
     vi.mocked(fetchMachineComparison).mockResolvedValue(mockData)
@@ -89,6 +93,7 @@ describe('MachineComparison', () => {
       expect(chartOptions.xAxis.data).toEqual(['Molding Machine 1', 'Molding Machine 2', 'Molding Machine 3'])
     })
   })
+
 
   it('formats tooltip values with decimals', async () => {
     vi.mocked(fetchMachineComparison).mockResolvedValue(mockData)
@@ -110,6 +115,7 @@ describe('MachineComparison', () => {
     })
   })
 
+
   it('handles empty data', async () => {
     vi.mocked(fetchMachineComparison).mockResolvedValue({
       machines: []
@@ -122,6 +128,7 @@ describe('MachineComparison', () => {
     })
   })
 
+
   it('formats machine names correctly', async () => {
     vi.mocked(fetchMachineComparison).mockResolvedValue(mockData)
     mount(MachineComparison)
@@ -130,6 +137,7 @@ describe('MachineComparison', () => {
       expect(echarts.init).toHaveBeenCalled()
     })
   })
+
 
   it('calculates defect rates as percentages', async () => {
     vi.mocked(fetchMachineComparison).mockResolvedValue(mockData)
@@ -145,6 +153,7 @@ describe('MachineComparison', () => {
       expect(defectRateSeries.data[0]).toBeCloseTo(7.6, 1)
     })
   })
+
 
   it('disposes chart on unmount', async () => {
     vi.mocked(fetchMachineComparison).mockResolvedValue(mockData)

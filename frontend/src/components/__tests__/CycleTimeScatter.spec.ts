@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import CycleTimeScatter from '@/components/CycleTimeScatter.vue'
 
-// Mock ECharts
+
 vi.mock('echarts/core', () => ({
   use: vi.fn(),
   init: vi.fn(() => ({
@@ -56,11 +56,13 @@ describe('CycleTimeScatter', () => {
     vi.clearAllMocks()
   })
 
+
   it('renders component title', () => {
     vi.mocked(fetchCycleTimeScatter).mockResolvedValue(mockData)
     const wrapper = mount(CycleTimeScatter)
     expect(wrapper.text()).toContain('Cycle Time vs Defect Count')
   })
+
 
   it('loads data on mount', async () => {
     vi.mocked(fetchCycleTimeScatter).mockResolvedValue(mockData)
@@ -76,6 +78,7 @@ describe('CycleTimeScatter', () => {
     })
   })
 
+
   it('displays summary statistics', async () => {
     vi.mocked(fetchCycleTimeScatter).mockResolvedValue(mockData)
     const wrapper = mount(CycleTimeScatter)
@@ -86,6 +89,7 @@ describe('CycleTimeScatter', () => {
       expect(wrapper.text()).toContain('4')
     })
   })
+
 
   it('applies correct correlation color for medium correlation', async () => {
     vi.mocked(fetchCycleTimeScatter).mockResolvedValue(mockData)
@@ -98,6 +102,7 @@ describe('CycleTimeScatter', () => {
     })
   })
 
+
   it('handles error state', async () => {
     vi.mocked(fetchCycleTimeScatter).mockRejectedValue(new Error('API Error'))
     const wrapper = mount(CycleTimeScatter)
@@ -107,6 +112,7 @@ describe('CycleTimeScatter', () => {
       expect(wrapper.text()).toContain('Error:')
     })
   })
+
 
   it('initializes chart with correct series', async () => {
     vi.mocked(fetchCycleTimeScatter).mockResolvedValue(mockData)
@@ -124,6 +130,7 @@ describe('CycleTimeScatter', () => {
     })
   })
 
+
   it('separates accepted and rejected products', async () => {
     vi.mocked(fetchCycleTimeScatter).mockResolvedValue(mockData)
     mount(CycleTimeScatter)
@@ -138,6 +145,7 @@ describe('CycleTimeScatter', () => {
       expect(rejectedSeries.data).toHaveLength(1)
     })
   })
+
 
   it('reloads chart when props change', async () => {
     vi.mocked(fetchCycleTimeScatter).mockResolvedValue(mockData)
@@ -167,6 +175,7 @@ describe('CycleTimeScatter', () => {
     })
   })
 
+
   it('handles empty data gracefully', async () => {
     vi.mocked(fetchCycleTimeScatter).mockResolvedValue({
       points: [],
@@ -179,6 +188,7 @@ describe('CycleTimeScatter', () => {
       expect(wrapper.text()).toContain('No data available')
     })
   })
+
 
   it('disposes chart on unmount', async () => {
     vi.mocked(fetchCycleTimeScatter).mockResolvedValue(mockData)

@@ -22,12 +22,14 @@ describe('FiltersSidebar', () => {
     vi.clearAllMocks()
   })
 
+
   it('renders filters title', () => {
     const wrapper = mount(FiltersSidebar, { props: defaultProps })
     expect(wrapper.text()).toContain('Filters')
   })
 
-it('loads machines on mount', async () => {
+
+  it('loads machines on mount', async () => {
     const { fetchMachines } = await import('@/services/analytics')
 
     mount(FiltersSidebar, { props: defaultProps })
@@ -37,7 +39,8 @@ it('loads machines on mount', async () => {
     })
   })
 
-it('emits update when machine is selected', async () => {
+
+  it('emits update when machine is selected', async () => {
     const wrapper = mount(FiltersSidebar, { props: defaultProps })
 
     await vi.waitFor(() => {
@@ -53,6 +56,7 @@ it('emits update when machine is selected', async () => {
     expect(emittedValue.machine).toBe('molding-machine-1')
   })
 
+
   it('emits collapse-change when collapse button is clicked', async () => {
     const wrapper = mount(FiltersSidebar, { props: defaultProps })
 
@@ -62,6 +66,7 @@ it('emits update when machine is selected', async () => {
       expect(wrapper.emitted('collapse-change')).toBeTruthy()
     }
   })
+
 
   it('clears all filters when clear button is clicked', async () => {
     const wrapper = mount(FiltersSidebar, {
@@ -83,6 +88,7 @@ it('emits update when machine is selected', async () => {
     expect(emittedValue.endDate).toBe('')
   })
 
+
   it('formats machine names correctly', () => {
     const wrapper = mount(FiltersSidebar, { props: defaultProps })
     const vm = wrapper.vm as any
@@ -91,7 +97,8 @@ it('emits update when machine is selected', async () => {
     expect(vm.getMachineName('test_machine_name')).toBe('Test Machine Name')
   })
 
-it('formats dates correctly', () => {
+
+  it('formats dates correctly', () => {
     const wrapper = mount(FiltersSidebar, { props: defaultProps })
     const vm = wrapper.vm as any
 

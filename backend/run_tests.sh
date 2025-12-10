@@ -1,18 +1,16 @@
 #!/bin/bash
 set -e
 
-# Colors for output
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
 echo "=========================================="
 echo "Krevera Analytics - Test Suite"
 echo "=========================================="
 echo ""
 
-# Detect if we're running in Docker or locally
 if [ -f /.dockerenv ]; then
     echo "📦 Running in Docker container"
     IN_DOCKER=true
@@ -23,21 +21,17 @@ fi
 
 echo ""
 
-# Function to check if test dependencies are installed
 check_test_dependencies() {
     python -c "import pytest" 2>/dev/null
     return $?
 }
 
-# Install test dependencies if needed
 if ! check_test_dependencies; then
     echo "📦 Installing test dependencies..."
 
     if [ "$IN_DOCKER" = true ]; then
-        # In Docker, install directly
         pip install -r requirements-test.txt
     else
-        # Locally, check for virtual environment
         if [ -z "$VIRTUAL_ENV" ]; then
             echo ""
             echo -e "${YELLOW}⚠️  No virtual environment detected${NC}"
@@ -52,7 +46,6 @@ if ! check_test_dependencies; then
                 echo "Creating virtual environment in ./venv..."
                 python -m venv venv
 
-                # Activate virtual environment
                 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
                     source venv/Scripts/activate
                 else
@@ -63,7 +56,6 @@ if ! check_test_dependencies; then
             fi
         fi
 
-        # Install dependencies
         pip install -r requirements.txt
         pip install -r requirements-test.txt
     fi
@@ -72,13 +64,11 @@ if ! check_test_dependencies; then
     echo ""
 fi
 
-# Parse test category argument
 TEST_CATEGORY=${1:-all}
 
 echo "🧪 Running tests: $TEST_CATEGORY"
 echo ""
 
-# Run tests based on category
 case $TEST_CATEGORY in
     "api")
         echo "Running API endpoint tests..."

@@ -51,7 +51,6 @@ class TestProductModel:
 
         assert product.overall_reject is False
         assert product.defect_count == 0
-        # total_severity_score has no default, so it will be None
         assert product.total_severity_score is None
 
     def test_product_relationship_with_machine_state(self, db_session, sample_product):
@@ -141,7 +140,7 @@ class TestMachineStateModel:
     def test_machine_state_requires_product(self, db_session):
         machine_state = MachineState(
             id=get_next_machine_state_id(),
-            product_id=99999,  # Non-existent product
+            product_id=99999,
             cycle_time=25.5,
             shot_count=1000,
         )
@@ -188,7 +187,7 @@ class TestDefectModel:
     def test_defect_requires_product(self, db_session):
         defect = Defect(
             id=get_next_defect_id(),
-            product_id=99999,  # Non-existent product
+            product_id=99999,
             defect_type="flash_defect",
             pixel_severity_value=0.5,
             pixel_severity_reject=False,
@@ -209,7 +208,6 @@ class TestDefectModel:
         db_session.commit()
 
         assert defect.reject is False
-        # pixel_severity_reject has no default, so it's None
         assert defect.pixel_severity_reject is None
 
     def test_defect_relationship_with_product(self, db_session, sample_product, sample_defect):

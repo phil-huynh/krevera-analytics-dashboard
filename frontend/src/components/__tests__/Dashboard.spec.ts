@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import Dashboard from '@/views/Dashboard.vue'
 
-// Mock analytics service
+
 vi.mock('@/services/analytics', () => ({
   fetchDefectRateTrend: vi.fn().mockResolvedValue({
     data_points: [],
@@ -19,7 +19,7 @@ vi.mock('@/services/analytics', () => ({
   fetchMachineDefectHeatmap: vi.fn().mockResolvedValue({ heatmap: [] })
 }))
 
-// Mock ECharts
+
 vi.mock('echarts/core', () => ({
   use: vi.fn(),
   init: vi.fn(() => ({
@@ -48,10 +48,10 @@ describe('Dashboard', () => {
         }
       }
     })
-
     expect(wrapper.find('.dashboard-layout').exists()).toBe(true)
     expect(wrapper.find('.dashboard-content').exists()).toBe(true)
   })
+
 
   it('handles sidebar collapse', async () => {
     const wrapper = mount(Dashboard, {
@@ -70,7 +70,6 @@ describe('Dashboard', () => {
         }
       }
     })
-
     const vm = wrapper.vm as any
     expect(vm.sidebarCollapsed).toBe(false)
 
@@ -80,6 +79,7 @@ describe('Dashboard', () => {
     expect(vm.sidebarCollapsed).toBe(true)
     expect(wrapper.find('.dashboard-content').classes()).toContain('sidebar-collapsed')
   })
+
 
   it('opens modal when chart is expanded', async () => {
     const wrapper = mount(Dashboard, {
@@ -96,7 +96,6 @@ describe('Dashboard', () => {
         }
       }
     })
-
     const vm = wrapper.vm as any
 
     vm.openModal('trend')
@@ -106,6 +105,7 @@ describe('Dashboard', () => {
     expect(vm.activeChart).toBe('trend')
     expect(wrapper.find('.modal.is-active').exists()).toBe(true)
   })
+
 
   it('closes modal when close button is clicked', async () => {
     const wrapper = mount(Dashboard, {
@@ -122,7 +122,6 @@ describe('Dashboard', () => {
         }
       }
     })
-
     const vm = wrapper.vm as any
 
     vm.openModal('trend')
@@ -135,6 +134,7 @@ describe('Dashboard', () => {
     expect(vm.zoomModalActive).toBe(false)
     expect(vm.activeChart).toBeNull()
   })
+
 
   it('updates filters correctly', async () => {
     const wrapper = mount(Dashboard, {
@@ -151,7 +151,6 @@ describe('Dashboard', () => {
         }
       }
     })
-
     const vm = wrapper.vm as any
 
     vm.filters = {

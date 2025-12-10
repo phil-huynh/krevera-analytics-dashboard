@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import TopDefects from '@/components/TopDefects.vue'
 
-// Mock ECharts
+
 vi.mock('echarts/core', () => ({
   use: vi.fn(),
   init: vi.fn(() => ({
@@ -31,7 +31,6 @@ vi.mock('echarts/renderers', () => ({
   CanvasRenderer: {}
 }))
 
-// Mock analytics service
 vi.mock('@/services/analytics', () => ({
   fetchTopDefects: vi.fn()
 }))
@@ -59,11 +58,13 @@ describe('TopDefects', () => {
     vi.clearAllMocks()
   })
 
+
   it('renders component title', () => {
     vi.mocked(fetchTopDefects).mockResolvedValue(mockData)
     const wrapper = mount(TopDefects)
     expect(wrapper.text()).toContain('Top Defect Types')
   })
+
 
   it('loads data on mount', async () => {
     vi.mocked(fetchTopDefects).mockResolvedValue(mockData)
@@ -80,6 +81,7 @@ describe('TopDefects', () => {
     })
   })
 
+
   it('displays summary statistics', async () => {
     vi.mocked(fetchTopDefects).mockResolvedValue(mockData)
     const wrapper = mount(TopDefects)
@@ -91,6 +93,7 @@ describe('TopDefects', () => {
     })
   })
 
+
   it('formats defect names correctly', async () => {
     vi.mocked(fetchTopDefects).mockResolvedValue(mockData)
     const wrapper = mount(TopDefects)
@@ -100,6 +103,7 @@ describe('TopDefects', () => {
       expect(wrapper.text()).not.toContain('knit_line_defect')
     })
   })
+
 
   it('allows changing top N value', async () => {
     vi.mocked(fetchTopDefects).mockResolvedValue(mockData)
@@ -120,6 +124,7 @@ describe('TopDefects', () => {
     })
   })
 
+
   it('handles error state', async () => {
     vi.mocked(fetchTopDefects).mockRejectedValue(new Error('API Error'))
     const wrapper = mount(TopDefects)
@@ -129,6 +134,7 @@ describe('TopDefects', () => {
       expect(wrapper.text()).toContain('Error loading chart')
     })
   })
+
 
   it('initializes chart with bar configuration', async () => {
     vi.mocked(fetchTopDefects).mockResolvedValue(mockData)
@@ -147,6 +153,7 @@ describe('TopDefects', () => {
     const chartOptions = vi.mocked(mockInstance.setOption).mock.calls[0][0]
     expect(chartOptions.series[0].type).toBe('bar')
   })
+
 
   it('reloads chart when props change', async () => {
     vi.mocked(fetchTopDefects).mockResolvedValue(mockData)
@@ -178,6 +185,7 @@ describe('TopDefects', () => {
     })
   })
 
+
   it('handles empty data', async () => {
     vi.mocked(fetchTopDefects).mockResolvedValue({
       defects: [],
@@ -189,6 +197,7 @@ describe('TopDefects', () => {
       expect(wrapper.find('.notification.is-danger').exists()).toBe(true)
     })
   })
+
 
   it('disposes chart on unmount', async () => {
     vi.mocked(fetchTopDefects).mockResolvedValue(mockData)

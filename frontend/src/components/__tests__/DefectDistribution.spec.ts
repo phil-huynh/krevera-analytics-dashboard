@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import DefectDistribution from '@/components/DefectDistribution.vue'
 
-// Mock ECharts
+
 vi.mock('echarts/core', () => ({
   use: vi.fn(),
   init: vi.fn(() => ({
@@ -27,7 +27,7 @@ vi.mock('echarts/renderers', () => ({
   CanvasRenderer: {}
 }))
 
-// Mock analytics service
+
 vi.mock('@/services/analytics', () => ({
   fetchDefectDistribution: vi.fn()
 }))
@@ -55,11 +55,13 @@ describe('DefectDistribution', () => {
     vi.clearAllMocks()
   })
 
+
   it('renders component title', () => {
     vi.mocked(fetchDefectDistribution).mockResolvedValue(mockData)
     const wrapper = mount(DefectDistribution)
     expect(wrapper.text()).toContain('Defect Count Distribution')
   })
+
 
   it('loads data on mount', async () => {
     vi.mocked(fetchDefectDistribution).mockResolvedValue(mockData)
@@ -75,6 +77,7 @@ describe('DefectDistribution', () => {
     })
   })
 
+
   it('displays summary statistics', async () => {
     vi.mocked(fetchDefectDistribution).mockResolvedValue(mockData)
     const wrapper = mount(DefectDistribution)
@@ -86,6 +89,7 @@ describe('DefectDistribution', () => {
     })
   })
 
+
   it('shows perfect products in green', async () => {
     vi.mocked(fetchDefectDistribution).mockResolvedValue(mockData)
     const wrapper = mount(DefectDistribution)
@@ -96,6 +100,7 @@ describe('DefectDistribution', () => {
     })
   })
 
+
   it('handles error state', async () => {
     vi.mocked(fetchDefectDistribution).mockRejectedValue(new Error('API Error'))
     const wrapper = mount(DefectDistribution)
@@ -105,6 +110,7 @@ describe('DefectDistribution', () => {
       expect(wrapper.text()).toContain('Error:')
     })
   })
+
 
   it('initializes chart with histogram configuration', async () => {
     vi.mocked(fetchDefectDistribution).mockResolvedValue(mockData)
@@ -120,6 +126,7 @@ describe('DefectDistribution', () => {
       expect(chartOptions.xAxis.data).toEqual(['0 defects', '1 defects', '2 defects', '3 defects', '4 defects'])
     })
   })
+
 
   it('reloads chart when props change', async () => {
     vi.mocked(fetchDefectDistribution).mockResolvedValue(mockData)
@@ -149,6 +156,7 @@ describe('DefectDistribution', () => {
     })
   })
 
+
   it('formats tooltip with percentages', async () => {
     vi.mocked(fetchDefectDistribution).mockResolvedValue(mockData)
     mount(DefectDistribution)
@@ -166,6 +174,7 @@ describe('DefectDistribution', () => {
       expect(result).toContain('42.5%')
     })
   })
+
 
   it('disposes chart on unmount', async () => {
     vi.mocked(fetchDefectDistribution).mockResolvedValue(mockData)

@@ -128,7 +128,7 @@ The platform uses a modern microservices architecture with clear separation of c
 ### Platform-Specific Requirements
 
 **Windows Users:**
-- **Git for Windows** (includes Git Bash) - recommended for running bash scripts
+- **Git for Windows** (includes Git Bash) for running bash scripts
   - Download: https://git-scm.com/download/win
 - **Alternative**: WSL2 (Windows Subsystem for Linux)
   - Install: `wsl --install` in PowerShell (Admin)
@@ -144,13 +144,13 @@ The platform uses a modern microservices architecture with clear separation of c
 
 ### System Requirements
 
-- **RAM**: Minimum 8GB (16GB recommended)
+- **RAM**: Minimum 8GB (16GB for best performance)
 - **Disk Space**: 5GB free space
 - **OS**: macOS, Linux, or Windows 10/11 with WSL2 or Git Bash
 
 ## Quick Start
 
-The fastest way to get the platform running is with the automated setup script:
+Get the platform running with the automated setup script:
 
 ### Unix/Linux/macOS
 
@@ -159,7 +159,11 @@ The fastest way to get the platform running is with the automated setup script:
 git clone <repository-url>
 cd krevera-analytics
 
-# Run the setup script (handles everything automatically)
+# Setup and load data in one command
+chmod +x setup.sh
+./setup.sh https://static.krevera.com/dataset.json
+
+# Or setup without data (load it later)
 chmod +x setup.sh
 ./setup.sh
 ```
@@ -171,11 +175,14 @@ chmod +x setup.sh
 git clone <repository-url>
 cd krevera-analytics
 
-# Run setup with Git Bash (recommended) or WSL2
+# With Git Bash
+bash setup.sh https://static.krevera.com/dataset.json
+
+# Or setup without data
 bash setup.sh
 ```
 
-**Windows Users**: This project uses bash scripts. We recommend using **Git Bash** (included with Git for Windows) or **WSL2** (Windows Subsystem for Linux). Alternatively, run commands manually as described in the [Manual Setup](#manual-setup) section.
+**Windows Users**: This project uses bash scripts. Use Git Bash (included with Git for Windows) or WSL2 (Windows Subsystem for Linux). You can also run commands manually as described in the [Manual Setup](#manual-setup) section.
 
 The `setup.sh` script will:
 1. ✅ Verify Docker and Docker Compose are installed
@@ -183,7 +190,9 @@ The `setup.sh` script will:
 3. 🏗️ Build all Docker containers
 4. 🚀 Start all services (PostgreSQL, Temporal, LocalStack, Backend, Worker, Frontend)
 5. ⏳ Wait for database initialization
-6. 📊 Run database migrations and seed with sample data
+6. 🗄️ Run database migrations automatically
+7. 📊 Load your dataset (if URL provided)
+8. ✅ Services are ready to use
 
 **After setup completes, access:**
 - **Frontend Dashboard**: http://localhost:5173
@@ -206,18 +215,21 @@ docker-compose up -d
 # Wait for services to be healthy (30-60 seconds)
 docker-compose ps
 
-# Seed the database with sample data
+# Run database migrations (creates tables)
+docker-compose exec backend alembic upgrade head
+
+# Seed the database with your data
 # Unix/Mac:
-./seed.sh https://static.krevera.com/dataset.json
+./seed.sh <your-dataset-url>
 
 # Windows (PowerShell):
-docker-compose exec backend python seed_cli.py --url https://static.krevera.com/dataset.json
+docker-compose exec backend python seed_cli.py --url <your-dataset-url>
 
 # Access the application
 open http://localhost:5173
 ```
 
-The dashboard should now be running with sample manufacturing data loaded.
+The dashboard should now be running with your manufacturing data loaded.
 
 ## Manual Setup
 
@@ -252,7 +264,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Run migrations
+# Run migrations (creates database tables)
 alembic upgrade head
 
 # Start the API server
@@ -293,9 +305,19 @@ npm run dev
 
 The platform includes a robust data ingestion pipeline that can process manufacturing data from various sources.
 
-### Using the Seed Script
+### Automatic Seeding (During Setup)
 
-The simplest way to ingest data:
+The easiest way is to provide your dataset URL during initial setup:
+
+```bash
+./setup.sh https://your-dataset-url.json
+```
+
+This will automatically set up the entire platform and load your data.
+
+### Manual Seeding (Anytime)
+
+You can load or replace data at any time using the `seed.sh` script:
 
 ```bash
 ./seed.sh <dataset-url>
@@ -306,14 +328,17 @@ The simplest way to ingest data:
 ./seed.sh https://static.krevera.com/dataset.json
 ```
 
+**Important Note:** The seed script **replaces** all existing data in the database using `TRUNCATE CASCADE`. If you want to preserve existing data while adding more, you'll need to merge datasets before ingesting.
+
 The script will:
 1. Validate the dataset URL
 2. Trigger a Temporal workflow
 3. Download the dataset
 4. Upload to S3 storage
 5. Parse and validate the data
-6. Bulk insert into PostgreSQL
-7. Report completion statistics
+6. **Clear existing data** (TRUNCATE CASCADE)
+7. Bulk insert new data into PostgreSQL
+8. Report completion statistics
 
 ![Data Ingestion Flow](./assets/data-ingestion.png)
 
@@ -403,7 +428,7 @@ curl "http://localhost:8000/api/v1/analytics/top-defects?limit=10" > top_defects
 
 The platform includes comprehensive test suites for both frontend and backend, with **101 total tests**.
 
-### Quick Test (Docker - Recommended)
+### Quick Test with Docker
 
 The easiest way to run tests without any local setup:
 
@@ -476,7 +501,7 @@ npm test ChartCard.test.ts
 
 ### Backend Tests (50 passing tests)
 
-#### Option 1: Using Docker (Recommended - Works on all platforms)
+#### Option 1: Using Docker (Works on all platforms)
 
 **Unix/Linux/macOS:**
 ```bash
@@ -518,7 +543,7 @@ cd backend
 
 **First-time setup**: The script will:
 1. Detect if you're in a virtual environment
-2. Offer to create one if not (recommended)
+2. Offer to create one if needed
 3. Install test dependencies automatically
 4. Run the tests
 
@@ -566,7 +591,7 @@ pytest -v
 
 ### Platform Compatibility Summary
 
-| Platform | Recommended Approach | Alternative |
+| Platform | Primary Method | Alternative |
 |----------|---------------------|-------------|
 | **macOS/Linux** | `./test-docker.sh` | `./run_tests.sh` in backend/ |
 | **Windows (Git Bash)** | `bash test-docker.sh` | Git Bash with `./run_tests.sh` |
@@ -809,6 +834,8 @@ docker-compose logs -f
 
 ### Production Deployment Architecture
 
+For production deployment:
+
 ```
 ┌──────────────────┐
 │   CloudFront     │  ◄── CDN for frontend assets
@@ -895,11 +922,9 @@ docker build -t krevera-frontend:latest ./frontend
 
 ### Common Issues
 
-**Windows: Bash scripts not working:**
+**Option 1: Git Bash**
 
 If you're on Windows and bash scripts won't run:
-
-**Option 1 - Git Bash (Recommended):**
 ```bash
 # Install Git for Windows (includes Git Bash)
 # Run scripts with:

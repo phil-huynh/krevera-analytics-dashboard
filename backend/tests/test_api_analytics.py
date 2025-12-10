@@ -46,7 +46,6 @@ class TestCycleTimeEndpoint:
 
     def test_get_cycle_time_with_data(self, client: TestClient, populated_db):
         response = client.get("/api/v1/analytics/cycle-time")
-        # API may return 404 if no data matches query criteria
         assert response.status_code in [200, 404]
 
         if response.status_code == 200:

@@ -61,8 +61,6 @@ def db_engine():
         cursor.close()
 
     Base.metadata.create_all(bind=engine)
-
-    # Reset ID counters for each test
     reset_id_counters()
 
     yield engine

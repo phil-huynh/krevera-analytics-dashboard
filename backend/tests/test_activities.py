@@ -160,19 +160,15 @@ class TestBatchInsertToDbActivity:
             "hash": "testhash",
         }
 
-        # Mock the SessionLocal and activity logger
         with patch('app.workflows.activities.SessionLocal') as mock_session_local:
             mock_session_local.return_value = db_session
 
-            # Mock the text() call to avoid TRUNCATE on SQLite
             with patch('app.workflows.activities.text') as mock_text:
-                # Make text() return a mock that SQLite can handle
                 mock_text.return_value = None
 
                 with patch('app.workflows.activities.activity') as mock_activity:
                     mock_activity.logger = Mock()
 
-                    # Clear tables manually before test
                     db_session.query(Product).delete()
                     db_session.commit()
 
@@ -211,7 +207,6 @@ class TestBatchInsertToDbActivity:
 
         dataset_info = {"filepath": temp_path, "hash": "testhash"}
 
-        # Mock the SessionLocal and text()
         with patch('app.workflows.activities.SessionLocal') as mock_session_local:
             mock_session_local.return_value = db_session
 
@@ -221,7 +216,6 @@ class TestBatchInsertToDbActivity:
                 with patch('app.workflows.activities.activity') as mock_activity:
                     mock_activity.logger = Mock()
 
-                    # Clear tables manually
                     db_session.query(Product).delete()
                     db_session.commit()
 

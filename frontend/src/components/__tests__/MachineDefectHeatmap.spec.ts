@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import MachineDefectHeatmap from '@/components/MachineDefectHeatmap.vue'
 
-// Mock ECharts
+
 vi.mock('echarts/core', () => ({
   use: vi.fn(),
   init: vi.fn(() => ({
@@ -28,7 +28,6 @@ vi.mock('echarts/renderers', () => ({
   CanvasRenderer: {}
 }))
 
-// Mock analytics service
 vi.mock('@/services/analytics', () => ({
   fetchMachineDefectHeatmap: vi.fn()
 }))
@@ -58,11 +57,13 @@ describe('MachineDefectHeatmap', () => {
     vi.clearAllMocks()
   })
 
+
   it('renders component title', () => {
     vi.mocked(fetchMachineDefectHeatmap).mockResolvedValue(mockData)
     const wrapper = mount(MachineDefectHeatmap)
     expect(wrapper.text()).toContain('Machine × Defect Type Analysis')
   })
+
 
   it('loads data on mount', async () => {
     vi.mocked(fetchMachineDefectHeatmap).mockResolvedValue(mockData)
@@ -77,6 +78,7 @@ describe('MachineDefectHeatmap', () => {
     })
   })
 
+
   it('displays metadata statistics', async () => {
     vi.mocked(fetchMachineDefectHeatmap).mockResolvedValue(mockData)
     const wrapper = mount(MachineDefectHeatmap)
@@ -88,6 +90,7 @@ describe('MachineDefectHeatmap', () => {
     })
   })
 
+
   it('handles error state', async () => {
     vi.mocked(fetchMachineDefectHeatmap).mockRejectedValue(new Error('API Error'))
     const wrapper = mount(MachineDefectHeatmap)
@@ -97,6 +100,7 @@ describe('MachineDefectHeatmap', () => {
       expect(wrapper.text()).toContain('Error loading heatmap')
     })
   })
+
 
   it('reloads chart when props change', async () => {
     vi.mocked(fetchMachineDefectHeatmap).mockResolvedValue(mockData)
@@ -124,6 +128,7 @@ describe('MachineDefectHeatmap', () => {
     })
   })
 
+
   it('handles empty data', async () => {
     vi.mocked(fetchMachineDefectHeatmap).mockResolvedValue({
       cells: [],
@@ -138,6 +143,7 @@ describe('MachineDefectHeatmap', () => {
       expect(wrapper.text()).toContain('No defect data available')
     })
   })
+
 
   it('disposes chart on unmount', async () => {
     vi.mocked(fetchMachineDefectHeatmap).mockResolvedValue(mockData)
