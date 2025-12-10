@@ -1,0 +1,320 @@
+/**
+ * Theme CSS Variables
+ * Location: frontend/src/assets/styles/themes.css
+ *
+ * Provides light/dark mode color schemes using CSS custom properties
+ */
+
+/* ============================================================================
+   LIGHT MODE (DEFAULT)
+   ============================================================================ */
+
+:root {
+  /* Backgrounds */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-tertiary: #fafafa;
+
+  /* Text colors */
+  --text-primary: #363636;
+  --text-secondary: #7a7a7a;
+  --text-light: #b5b5b5;
+
+  /* Borders & shadows */
+  --border-color: #dbdbdb;
+  --card-shadow: rgba(10, 10, 10, 0.1);
+  --card-shadow-hover: rgba(10, 10, 10, 0.2);
+
+  /* Bulma color overrides */
+  --link-color: #3273dc;
+  --success-color: #48c774;
+  --warning-color: #ffdd57;
+  --danger-color: #f14668;
+  --info-color: #3298dc;
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+.dark-mode {
+  /* Backgrounds */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #363636;
+
+  /* Text colors */
+  --text-primary: #f5f5f5;
+  --text-secondary: #b5b5b5;
+  --text-light: #7a7a7a;
+
+  /* Borders & shadows */
+  --border-color: #4a4a4a;
+  --card-shadow: rgba(0, 0, 0, 0.5);
+  --card-shadow-hover: rgba(0, 0, 0, 0.8);
+
+  /* Bulma color overrides */
+  --link-color: #5c9ce6;
+  --success-color: #5edc7a;
+  --warning-color: #ffe666;
+  --danger-color: #ff668d;
+  --info-color: #5cb3ff;
+}
+
+/* ============================================================================
+   BASE ELEMENTS
+   ============================================================================ */
+
+body {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================================================
+   BULMA OVERRIDES - LAYOUT COMPONENTS
+   ============================================================================ */
+
+.section {
+  background-color: var(--bg-secondary);
+}
+
+.container {
+  background-color: transparent;
+}
+
+/* ============================================================================
+   BULMA OVERRIDES - BOX COMPONENT
+   ============================================================================ */
+
+.box {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color);
+  box-shadow: 0 2px 8px var(--card-shadow) !important;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.box:hover {
+  box-shadow: 0 4px 12px var(--card-shadow-hover) !important;
+}
+
+/* ============================================================================
+   BULMA OVERRIDES - CARD COMPONENT
+   ============================================================================ */
+
+.card {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 2px 8px var(--card-shadow) !important;
+  transition: all 0.3s ease;
+}
+
+.card-header {
+  background-color: var(--bg-secondary) !important;
+  border-bottom-color: var(--border-color) !important;
+  box-shadow: none !important;
+}
+
+.card-header-title {
+  color: var(--text-primary) !important;
+}
+
+.card-header-icon {
+  color: var(--text-secondary) !important;
+}
+
+.card-content {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.card-footer {
+  background-color: var(--bg-secondary) !important;
+  border-top-color: var(--border-color) !important;
+}
+
+.card-footer-item {
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* ============================================================================
+   BULMA OVERRIDES - FORM ELEMENTS
+   ============================================================================ */
+
+.input,
+.textarea,
+.select select {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.input:focus,
+.textarea:focus,
+.select select:focus {
+  border-color: var(--link-color) !important;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--text-secondary) !important;
+}
+
+.label {
+  color: var(--text-primary) !important;
+}
+
+/* ============================================================================
+   BULMA OVERRIDES - TABLE
+   ============================================================================ */
+
+.table {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.table thead th {
+  color: var(--text-primary) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+.table tbody tr {
+  border-bottom-color: var(--border-color) !important;
+}
+
+.table.is-striped tbody tr:nth-child(even) {
+  background-color: var(--bg-secondary) !important;
+}
+
+/* ============================================================================
+   BULMA OVERRIDES - NOTIFICATION & MESSAGE
+   ============================================================================ */
+
+.notification {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.message {
+  background-color: var(--bg-primary) !important;
+}
+
+.message-header {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.message-body {
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ============================================================================
+   BULMA OVERRIDES - MODAL
+   ============================================================================ */
+
+.modal-card {
+  background-color: var(--bg-primary) !important;
+}
+
+.modal-card-head,
+.modal-card-foot {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.modal-card-title {
+  color: var(--text-primary) !important;
+}
+
+.modal-card-body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ============================================================================
+   BULMA OVERRIDES - MENU & PANEL
+   ============================================================================ */
+
+.menu-list a {
+  color: var(--text-primary) !important;
+}
+
+.menu-list a:hover {
+  background-color: var(--bg-secondary) !important;
+}
+
+.menu-list a.is-active {
+  background-color: var(--link-color) !important;
+}
+
+.panel {
+  background-color: var(--bg-primary) !important;
+}
+
+.panel-heading {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.panel-block {
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* ============================================================================
+   BULMA OVERRIDES - TAGS
+   ============================================================================ */
+
+.tag:not(.is-primary):not(.is-info):not(.is-success):not(.is-warning):not(.is-danger) {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ============================================================================
+   BULMA OVERRIDES - BREADCRUMB & PAGINATION
+   ============================================================================ */
+
+.breadcrumb a {
+  color: var(--link-color) !important;
+}
+
+.breadcrumb li.is-active a {
+  color: var(--text-primary) !important;
+}
+
+.pagination-previous,
+.pagination-next,
+.pagination-link {
+  background-color: var(--bg-primary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.pagination-link.is-current {
+  background-color: var(--link-color) !important;
+  border-color: var(--link-color) !important;
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+.has-background-light {
+  background-color: var(--bg-secondary) !important;
+}
+
+.has-background-white {
+  background-color: var(--bg-primary) !important;
+}
+
+.has-text-grey {
+  color: var(--text-secondary) !important;
+}
+
+.has-text-grey-light {
+  color: var(--text-light) !important;
+}

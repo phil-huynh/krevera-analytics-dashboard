@@ -1,0 +1,63 @@
+/* Global base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Base app container */
+#app {
+  min-height: 100vh;
+  background-color: var(--bg-secondary);
+}
+
+/* Navbar styles */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .navbar.is-dark {
+  background-color: #1a1a1a;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Modal z-index fix */
+.modal {
+  z-index: 250 !important;
+}
+
+.modal-background {
+  z-index: 250 !important;
+}
+
+.modal-card {
+  z-index: 251 !important;
+}
