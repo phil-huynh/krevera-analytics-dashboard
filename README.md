@@ -340,17 +340,6 @@ The script will:
 7. Bulk insert new data into PostgreSQL
 8. Report completion statistics
 
-![Data Ingestion Flow](./assets/data-ingestion.png)
-
-### Using the API Directly
-
-Trigger data ingestion via the API:
-
-```bash
-curl -X POST "http://localhost:8000/api/v1/ingest" \
-  -H "Content-Type: application/json" \
-  -d '{"dataset_url": "https://static.krevera.com/dataset.json"}'
-```
 
 ### Data Format
 
@@ -598,15 +587,6 @@ pytest -v
 | **Windows (PowerShell)** | `docker-compose exec -T backend pytest -v` | Manual venv + pytest |
 | **Windows (WSL2)** | `./test-docker.sh` | `./run_tests.sh` in backend/ |
 
-### Continuous Integration
-
-All tests run automatically on every commit:
-
-```bash
-# Run complete test suite (frontend + backend)
-npm test                     # Frontend (from frontend/)
-./test-docker.sh            # Backend (from project root)
-```
 
 ### Coverage Reports
 
@@ -700,37 +680,56 @@ Response:
 ```
 
 ## Project Structure
-
 ```
 krevera-analytics/
 ├── frontend/                  # Vue 3 frontend application
 │   ├── src/
 │   │   ├── components/       # Vue components
-│   │   │   ├── charts/      # Chart components (6 types)
+│   │   │   ├── __tests__/   # Component tests (9 test files)
 │   │   │   ├── ChartCard.vue
-│   │   │   └── FiltersSidebar.vue
+│   │   │   ├── CycleTimeScatter.vue
+│   │   │   ├── DefectDistribution.vue
+│   │   │   ├── DefectRateTrend.vue
+│   │   │   ├── FiltersSidebar.vue
+│   │   │   ├── MachineComparison.vue
+│   │   │   ├── MachineDefectHeatmap.vue
+│   │   │   └── TopDefects.vue
 │   │   ├── views/
 │   │   │   └── Dashboard.vue
 │   │   ├── services/
-│   │   │   └── api.ts       # API client
-│   │   └── utils/
-│   │       └── chartOptions.ts
-│   ├── tests/               # Frontend test suite (51 tests)
-│   └── package.json
+│   │   │   └── analytics.ts  # API client
+│   │   ├── stores/
+│   │   │   ├── filters.ts    # Filter state management
+│   │   │   └── preferences.ts
+│   │   ├── types/
+│   │   │   └── analytics.ts  # TypeScript interfaces
+│   │   ├── router/
+│   │   │   └── index.ts
+│   │   ├── test/
+│   │   │   ├── setup.ts
+│   │   │   ├── mocks/
+│   │   │   └── utils.spec.ts
+│   │   ├── App.vue
+│   │   └── main.ts
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── vite.config.ts
+│   └── tsconfig.json
 │
 ├── backend/                  # FastAPI backend application
 │   ├── app/
 │   │   ├── api/
-│   │   │   └── v1/
-│   │   │       └── analytics.py  # API endpoints
+│   │   │   └── endpoints/
+│   │   │       └── analytics.py  # Analytics API endpoints
 │   │   ├── models/          # SQLAlchemy models
 │   │   │   ├── product.py
 │   │   │   ├── machine_state.py
 │   │   │   └── defect.py
+│   │   ├── schemas/         # Pydantic schemas
+│   │   │   └── analytics.py
 │   │   ├── workflows/       # Temporal workflows
 │   │   │   ├── ingestion.py
-│   │   │   ├── activities.py
-│   │   │   └── worker.py
+│   │   │   └── activities.py
 │   │   ├── services/
 │   │   │   └── s3_service.py
 │   │   ├── core/
@@ -739,15 +738,29 @@ krevera-analytics/
 │   │   │   └── logging.py
 │   │   └── main.py
 │   ├── tests/               # Backend test suite (50 tests)
+│   │   ├── conftest.py      # Test fixtures
+│   │   ├── test_models.py
+│   │   ├── test_api_analytics.py
+│   │   ├── test_activities.py
+│   │   └── test_s3_service.py
 │   ├── alembic/             # Database migrations
+│   │   ├── env.py
+│   │   └── versions/
+│   ├── scripts/
+│   │   └── init-db.sh
+│   ├── seed_cli.py          # CLI for data ingestion
+│   ├── worker.py            # Temporal worker
+│   ├── run_tests.sh
+│   ├── Dockerfile
 │   ├── requirements.txt
-│   └── Dockerfile
+│   ├── requirements-test.txt
+│   └── requirements-dev.txt
 │
 ├── docker-compose.yml       # Service orchestration
 ├── setup.sh                 # Automated setup script
 ├── seed.sh                  # Data ingestion script
 ├── test-docker.sh           # Docker-based test runner
-├── assets/                  # Documentation images
+├── .gitignore
 └── README.md
 ```
 
@@ -804,16 +817,6 @@ export const getNewMetric = async () => {
 
 4. **Add tests** for both backend and frontend
 
-### Code Style
-
-**Frontend:**
-- ESLint + Prettier configuration included
-- Run: `npm run lint`
-
-**Backend:**
-- Black for code formatting
-- Run: `black app/`
-- Type hints required for all functions
 
 ### Logging
 
